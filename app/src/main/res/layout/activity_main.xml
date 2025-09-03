@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09BCA3"
+    android:background="#9EE0A0"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView_numeroGerado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Número Gerado"
+        android:text="Número gerado"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btn_sortear"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:backgroundTint="#17524C"
+        android:backgroundTint="#1B8E20"
         android:text="SORTEAR UM NÚMERO"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
