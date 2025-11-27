@@ -19,7 +19,6 @@ Ideal para sorteios rápidos, jogos, decisões ou qualquer situação em que sej
 * ViewBinding
 
 ### Melhorias Futuras
-* Escolher intervalo personalizado (ex.: 1–1000)
 * Histórico de números sorteados
 * Animação durante o sorteio
 * Tema claro/escuro
