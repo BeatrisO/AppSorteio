@@ -22,12 +22,29 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-            binding.btnSortear.setOnClickListener {
-                sortear()
+        binding.btnSortear.setOnClickListener {
+            sortear()
         }
     }
+
     fun sortear() {
-         val numero = Random.nextInt(0, 101).toString()
-        binding.textViewNumeroGerado.text = numero
+        binding.textViewNumeroGerado.animate()
+            .translationX(20f)
+            .setDuration(50)
+            .withEndAction {
+                binding.textViewNumeroGerado.animate()
+                    .translationX(-20f)
+                    .setDuration(50)
+                    .withEndAction {
+                        binding.textViewNumeroGerado.animate()
+                            .translationX(0f)
+                            .setDuration(50)
+                    }
+            }
+
+        val numero = Random.nextInt(0, 101).toString()
+        binding.textViewNumeroGerado.postDelayed({
+            binding.textViewNumeroGerado.text = numero
+        }, 150)
     }
 }
