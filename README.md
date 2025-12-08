@@ -6,17 +6,17 @@ Ideal para sorteios rápidos, jogos, decisões ou qualquer situação em que sej
 ### Funcionalidades
 
 * Geração instantânea de números aleatórios
-* Intervalo padrão de 0 a 100
+* Intervalo configurável (valor inicial e valor final)
 * Interface limpa e intuitiva
 * Botão dedicado para realizar o sorteio
 * Exibição clara do resultado na tela
-* Código simples, direto e fácil de manter
+* Animação 
 
 ### Tecnologias Utilizadas
 
 * Kotlin
 * Android Studio
-* ViewBinding
+* Jetpack Compose (projeto começou usando ViewBinding)
 
 ### Melhorias Futuras
 * Histórico de números sorteados
