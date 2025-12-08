@@ -20,6 +20,5 @@ Ideal para sorteios rápidos, jogos, decisões ou qualquer situação em que sej
 
 ### Melhorias Futuras
 * Histórico de números sorteados
-* Animação durante o sorteio
 * Tema claro/escuro
-* Migrar interface para Jetpack Compose
+
