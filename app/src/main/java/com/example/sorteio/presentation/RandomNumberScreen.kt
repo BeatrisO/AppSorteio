@@ -13,19 +13,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
-import kotlin.random.Random
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sorteio.viewmodel.RandomViewModel
 
 @Composable
-fun RandomNumberScreen() {
-    var number by remember { mutableStateOf("0") }
-    var startShake by remember { mutableStateOf(false) }
-    var triggerSort by remember { mutableStateOf(false) }
-    var minValueInput by remember { mutableStateOf("0") }
-    var maxValueInput by remember { mutableStateOf("100") }
+fun RandomNumberScreen(
+    viewModel: RandomViewModel = viewModel()
+) {
+    val state by viewModel.uiState.collectAsState()
 
     val offsetX by animateFloatAsState(
-        targetValue = if (startShake) 1f else 0f,
+        targetValue = if (state.isShaking) 1f else 0f,
         animationSpec = keyframes {
             durationMillis = 350
             (-8f).at(0)
@@ -35,27 +33,7 @@ fun RandomNumberScreen() {
             (-4f).at(200)
             (4f).at(250)
             (0f).at(350)
-        },
-        finishedListener = { startShake = false }
-    )
-
-    LaunchedEffect(triggerSort) {
-        if (triggerSort) {
-
-            val min = minValueInput.toIntOrNull() ?: 0
-            val max = maxValueInput.toIntOrNull() ?: 100
-
-            val realMin = min.coerceAtMost(max)
-            val realMax = max.coerceAtLeast(min)
-
-            repeat(12) {
-                number = Random.nextInt(realMin, realMax + 1).toString()
-                delay(45)
-            }
-
-            triggerSort = false
-        }
-    }
+        })
 
     Column(
         modifier = Modifier
@@ -69,12 +47,11 @@ fun RandomNumberScreen() {
 
         Spacer(Modifier.height(24.dp))
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+
             OutlinedTextField(
-                value = minValueInput,
-                onValueChange = { minValueInput = it },
+                value = state.min,
+                onValueChange = viewModel::onMinChange,
                 label = { Text("Número Inicial") },
                 singleLine = true,
                 modifier = Modifier.width(150.dp),
@@ -82,8 +59,8 @@ fun RandomNumberScreen() {
             )
 
             OutlinedTextField(
-                value = maxValueInput,
-                onValueChange = { maxValueInput = it },
+                value = state.max,
+                onValueChange = viewModel::onMaxChange,
                 label = { Text("Número Final") },
                 singleLine = true,
                 modifier = Modifier.width(150.dp),
@@ -94,7 +71,7 @@ fun RandomNumberScreen() {
         Spacer(Modifier.height(40.dp))
 
         Text(
-            text = number,
+            text = state.number,
             fontSize = 64.sp,
             modifier = Modifier.offset(x = offsetX.dp)
         )
@@ -102,10 +79,7 @@ fun RandomNumberScreen() {
         Spacer(Modifier.height(40.dp))
 
         Button(
-            onClick = {
-                startShake = true
-                triggerSort = true
-            },
+            onClick = viewModel::sort,
             modifier = Modifier
                 .height(60.dp)
                 .width(180.dp)
