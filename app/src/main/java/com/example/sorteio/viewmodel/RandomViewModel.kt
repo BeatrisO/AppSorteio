@@ -6,40 +6,51 @@ import com.example.sorteio.presentation.RandomUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class RandomViewModel : ViewModel() {
 
-    private val state = MutableStateFlow(RandomUiState())
-    val uiState = state.asStateFlow()
+    private val _uiState = MutableStateFlow(RandomUiState())
+    val uiState = _uiState.asStateFlow()
 
     fun sort() {
-        val min = state.value.min.toIntOrNull() ?: 0
-        val max = state.value.max.toIntOrNull() ?: 100
+
+        val currentState = _uiState.value
+
+        if (currentState.isShaking) return
+
+        val min = currentState.min.toIntOrNull() ?: 0
+        val max = currentState.max.toIntOrNull() ?: 100
 
         val realMin = min.coerceAtMost(max)
         val realMax = max.coerceAtLeast(min)
 
         viewModelScope.launch {
-            state.value = state.value.copy(isShaking = true)
+
+            _uiState.update { it.copy(isShaking = true) }
 
             repeat(12) {
-                state.value = state.value.copy(
-                    number = Random.Default.nextInt(realMin, realMax + 1).toString()
-                )
+
+                val randomNumber = Random.nextInt(realMin, realMax + 1)
+
+                _uiState.update {
+                    it.copy(number = randomNumber.toString())
+                }
+
                 delay(45)
             }
 
-            state.value = state.value.copy(isShaking = false)
+            _uiState.update { it.copy(isShaking = false) }
         }
     }
 
     fun onMinChange(value: String) {
-        state.value = state.value.copy(min = value)
+        _uiState.update { it.copy(min = value) }
     }
 
     fun onMaxChange(value: String) {
-        state.value = state.value.copy(max = value)
+        _uiState.update { it.copy(max = value) }
     }
 }
